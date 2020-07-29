@@ -56,6 +56,7 @@ def get_all_users(current_user):
 		output.append(user_data)
 
 	return jsonify({"users": output}) 
+	
 
 @usuarios.route('/user/<public_id>', methods=['GET'])
 @token_required

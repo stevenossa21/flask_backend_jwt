@@ -2,8 +2,10 @@ from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.mysql import FLOAT, TEXT
+from flask_marshmallow import Marshmallow
 
 db = SQLAlchemy()
+ma = Marshmallow()
 
 class User(db.Model):
 	"""Usuarios de la aplicacion"""
@@ -31,7 +33,7 @@ class Product(db.Model):
 	__tablename__ = 'product'
 
 	id = db.Column(db.Integer, primary_key=True)
-	product_name = db.Column(db.String(50) nullable=False)
+	product_name = db.Column(db.String(50), nullable=False)
 	ref = db.Column(db.String(100))
 	buy = db.Column(db.Integer, default=0)
 	stock = db.Column(db.Integer, default=0)
