@@ -5,7 +5,7 @@ import jwt
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import  wraps
-from models.models import db, Todo
+from models.models import db, Todo, User
 
 tareas = Blueprint('tareas', __name__)
 
@@ -31,6 +31,7 @@ def token_required(f):
 
 	return decorated
 
+"""""token is invalid xD"""""
 @tareas.route('/tareas')
 def indextodo():
 	return jsonify({'msg': 'welcome to api tareas'})

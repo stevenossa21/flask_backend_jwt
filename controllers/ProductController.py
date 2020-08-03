@@ -7,6 +7,7 @@ import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import  wraps
 from models.models import db, Product, ma
+import simplejson as json
 
 
 products = Blueprint('products', __name__)
@@ -43,9 +44,14 @@ class TipoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('product_name','type_name')
 
+class StadsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        fields = ('compra','stock', 'gastado', 'vendido')
+
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 tipos_schema = TipoSchema(many=True)
+stads_schema = StadsSchema()
 
 
 
@@ -66,3 +72,15 @@ def tipo():
 	print('result: ', result)
 	result = tipos_schema.dump(result)
 	return jsonify(result)
+
+@products.route('/product/stads', methods=['GET'])
+def stads():
+	sql = text("""SELECT SUM(buy) as 'compra', SUM(stock) as 'stock', SUM(buy_price) as 'gastado', SUM(sell_price) as 'vendido' FROM product""")
+	result = db.engine.execute(sql).first()
+	result = stads_schema.dump(result)
+	totalBuy = int(result['compra'])
+	totalStock = int(result['stock'])
+	totalGasto = float(result['gastado'])
+	totalVenta = float(result['vendido'])
+	response = {'comprado': totalBuy, 'vendido': totalBuy-totalStock, 'stock': totalStock, 'ganancia': totalVenta-totalGasto, 'precio_compra': totalGasto, 'precio_venta': totalVenta}
+	return jsonify(response)

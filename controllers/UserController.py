@@ -45,7 +45,7 @@ def get_all_users(current_user):
 
 	output = []
 
-	#para esto es el marshmallow ?
+	#para esto es el marshmallow ? si
 
 	for user in users:
 		user_data = {}
@@ -55,8 +55,7 @@ def get_all_users(current_user):
 		user_data['admin'] = user.admin
 		output.append(user_data)
 
-	return jsonify({"users": output}) 
-	
+	return jsonify({"users": output})
 
 @usuarios.route('/user/<public_id>', methods=['GET'])
 @token_required
@@ -132,6 +131,7 @@ def login():
 			else:
 				return jsonify({'msg': 'invalid password'})
 
+
 @usuarios.route('/ingresar', methods=['POST'])
 def ingresar():
 	data = request.get_json()
@@ -141,6 +141,6 @@ def ingresar():
 		return jsonify({"msg": "El nombre de usuario no esta asociado a ninguna cuenta"}), 401
 	if check_password_hash(user.password, data['password']): #Compara el password cifrado de la bd con el password enviado en req sin cifrar
 		token = jwt.encode({'public_id': user.public_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, current_app.config['SECRET_KEY'])
-		return jsonify({'token': token.decode('UTF-8')})
+		return jsonify({'token': token.decode('UTF-8')}), 200
 	else:
 		return jsonify({'msg': 'contraseña incorrecta'}), 401

@@ -1,5 +1,5 @@
 class Config(object):
-    SECRET_KEY = b"'U\x93?\t\x0c\xb6\x03>B\xdef\x90\xb3\xe7\xb1S)wP7Z\xdd\xb8"
+    SECRET_KEY = "AJC304KJCNALKJSALJFIE204092JFKJACLKJ2P¿0¿J¿JC" 
     
 class DevelopmentConfig(Config):
     DEBUG = True

@@ -8,12 +8,14 @@ from controllers.pruebacontroller import prueba
 from controllers.UserController import usuarios
 from controllers.TodoController import tareas
 from controllers.ProductController import products
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 db.init_app(app)
 ma.init_app(app)
 
+CORS(app)
 
 @app.route('/')
 def index():
@@ -27,4 +29,5 @@ app.register_blueprint(products)
 if __name__== '__main__':
 	with app.app_context():
 		db.create_all() #crea todas las tablas que no esten creadas en la BD
-	app.run(debug=True, port=int(PORT))
+	app.run(host = '0.0.0.0', port=int(PORT), debug=True )
+
